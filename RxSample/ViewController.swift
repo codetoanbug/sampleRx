@@ -7,12 +7,29 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        let bag = DisposeBag()
+
+        let bannersEnabled = BehaviorRelay<String>(value: "code")
+
+        bannersEnabled.accept("toan")
+        bannersEnabled.accept("bug")
+
+        let subscriber = bannersEnabled.subscribe { (event) in
+            print("event = \(event)")
+        }
+
+        bannersEnabled.accept("viet")
+        bannersEnabled.accept("nam")
+
+        subscriber.disposed(by: bag)
     }
 
 
